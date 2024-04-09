@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MedCare.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace MedCare.Persistence.Context
 {
@@ -17,7 +18,11 @@ namespace MedCare.Persistence.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            //modelBuilder.Entity<Paciente>()
+            //    .HasIndex(c => new { c.cpf })
+            //    .IsUnique();
         }
+
+        public DbSet<Paciente> pacientes { get; set; }
     }
 }
