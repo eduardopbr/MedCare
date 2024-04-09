@@ -9,6 +9,7 @@ namespace MedCare.Domain.Entities
         [StringLength(50)]
         public string nome { get; set; } = null!;
         [StringLength(40)]
+        [Index(IsUnique=true)]
         public string cpf { get; set; } = null!;
         [StringLength(20)]
         public string sexo { get; set; } = null!;
