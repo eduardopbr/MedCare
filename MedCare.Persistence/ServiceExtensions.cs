@@ -1,4 +1,6 @@
-﻿using MedCare.Persistence.Context;
+﻿using MedCare.Domain.Interfaces;
+using MedCare.Persistence.Context;
+using MedCare.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +19,7 @@ namespace MedCare.Persistence
             var connectionString = configuration.GetConnectionString("DefaultConnection");
 
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
     }
 }

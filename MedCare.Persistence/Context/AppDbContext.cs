@@ -18,11 +18,10 @@ namespace MedCare.Persistence.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<Paciente>()
-            //    .HasIndex(c => new { c.cpf })
-            //    .IsUnique();
+            
         }
 
         public DbSet<Paciente> pacientes { get; set; }
+        public DbSet<Funcionario> funcionarios { get; set; }
     }
 }
