@@ -29,7 +29,25 @@ namespace MedCare.Application.UseCases.PacienteCase.CreatePaciente
 
             await _unitOfWork.Commit(cancellationToken);
 
-            return new Response(_mapper.Map<CreatePacienteResponse>(paciente));
+
+            try {
+
+                return new Response(_mapper.Map<CreatePacienteResponse>(paciente));
+                
+            }
+            catch (Exception ex) {
+                if (ex.GetType() == typeof(DbEntityValidationException))
+                {
+
+                  return "A valição falhou. Tente novamente.";
+
+                } else 
+                if (ex.GetType() == typeof(DbUpdateException)){
+
+                  return "A operação falhou. Tente novamente.";
+
+                }
+            }
         }
     }
 }
