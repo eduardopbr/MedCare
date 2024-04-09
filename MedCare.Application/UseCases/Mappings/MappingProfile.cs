@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MedCare.Application.UseCases.PacienteCase.CreatePaciente;
+using MedCare.Application.UseCases.PacienteCase.UpdatePaciente;
 using MedCare.Domain.Entities;
 
 namespace MedCare.Application.UseCases.Mappings
@@ -10,6 +11,9 @@ namespace MedCare.Application.UseCases.Mappings
         {
             CreateMap<CreatePacienteRequest, Paciente>();
             CreateMap<Paciente, CreatePacienteResponse>();
+
+            CreateMap<UpdatePacienteRequest, Paciente>();
+            CreateMap<Paciente, UpdatePacienteResponse>();
         }
     }
 }
