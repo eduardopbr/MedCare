@@ -25,28 +25,16 @@ namespace MedCare.Application.UseCases.PacienteCase.CreatePaciente
         {
             var paciente = _mapper.Map<Paciente>(request);
 
-            _unitOfWork.PacienteRepository.Add(paciente);
+            try 
+            {
+                _unitOfWork.PacienteRepository.Add(paciente);
 
-            await _unitOfWork.Commit(cancellationToken);
-
-
-            try {
-
+                await _unitOfWork.Commit(cancellationToken);
                 return new Response(_mapper.Map<CreatePacienteResponse>(paciente));
-                
             }
-            catch (Exception ex) {
-                if (ex.GetType() == typeof(DbEntityValidationException))
-                {
-
-                  return "A valição falhou. Tente novamente.";
-
-                } else 
-                if (ex.GetType() == typeof(DbUpdateException)){
-
-                  return "A operação falhou. Tente novamente.";
-
-                }
+            catch (Exception ex) 
+            {
+                return new Response().AddError(ex.Message);
             }
         }
     }
