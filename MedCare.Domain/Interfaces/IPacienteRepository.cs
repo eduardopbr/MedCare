@@ -9,6 +9,6 @@ namespace MedCare.Domain.Interfaces
 {
     public interface IPacienteRepository : IRepository<Paciente>
     {
-
+        Task<List<Paciente>> GetPacientesByNome(string nome);
     }
 }

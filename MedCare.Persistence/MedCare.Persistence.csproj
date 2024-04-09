@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\" />
+    <ProjectReference Include="..\MedCare.Application\MedCare.Application.csproj" />
   </ItemGroup>
 
 </Project>
