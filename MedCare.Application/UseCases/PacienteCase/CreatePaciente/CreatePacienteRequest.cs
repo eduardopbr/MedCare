@@ -8,5 +8,5 @@ using System.Threading.Tasks;
 
 namespace MedCare.Application.UseCases.PacienteCase.CreatePaciente
 {
-    public sealed record CreatePacienteRequest(string nome, string cpf, string rg, string sexo, DateTime datanascimento, string endereco, string celular, string email) : IRequest<Response>;
+    public sealed record CreatePacienteRequest(string nome, string cpf, string sexo, DateTime datanascimento, string endereco, string celular, string email) : IRequest<Response>;
 }

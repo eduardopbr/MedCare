@@ -12,7 +12,7 @@ namespace MedCare.Persistence.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Server=localhost;Port=5432;User Id=postgres;Password=32259570@info;Database=MedCareBase", b => b.MigrationsAssembly("MedCare.Persistence"));
+            optionsBuilder.UseNpgsql("Server=localhost;Port=5432;User Id=postgres;Password=32259570;Database=MedCareBase", b => b.MigrationsAssembly("MedCare.Persistence"));
             base.OnConfiguring(optionsBuilder);
         }
 

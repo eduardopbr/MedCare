@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MedCare.Application.UseCases.PacienteCase.DeletePaciente
+namespace MedCare.Application.UseCases.PacienteCase.GetPaciente
 {
-    public sealed record DeletePacienteRequest(int id) : IRequest<Response>;
+    public sealed record GetPacienteRequest(int pacienteid) : IRequest<Response>;
 }

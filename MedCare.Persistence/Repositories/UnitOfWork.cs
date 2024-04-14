@@ -9,6 +9,7 @@ namespace MedCare.Persistence.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private PacienteRepository _pacienteRepo;
+        private FuncionarioRepository _funcionarioRepo;
         public AppDbContext _context;
         public UnitOfWork(AppDbContext context)
         {
@@ -30,6 +31,14 @@ namespace MedCare.Persistence.Repositories
             get
             {
                 return _pacienteRepo = _pacienteRepo ?? new PacienteRepository(_context);
+            }
+        }
+
+        public IFuncionarioRepository FuncionarioRepository
+        {
+            get
+            {
+                return _funcionarioRepo = _funcionarioRepo ?? new FuncionarioRepository(_context);
             }
         }
     }

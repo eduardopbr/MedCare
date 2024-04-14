@@ -10,6 +10,7 @@ namespace MedCare.Domain.Interfaces
     public interface IUnitOfWork
     {
         IPacienteRepository PacienteRepository { get; }
+        IFuncionarioRepository FuncionarioRepository { get; }
         Task Commit(CancellationToken cancellationToken);
         Task<IDbTransaction> BeginTransaction();
     }

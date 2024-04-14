@@ -1,5 +1,7 @@
 ﻿using MedCare.Application.Shared.Behavior;
 using MedCare.Application.UseCases.PacienteCase.CreatePaciente;
+using MedCare.Application.UseCases.PacienteCase.DeletePaciente;
+using MedCare.Application.UseCases.PacienteCase.GetPaciente;
 using MedCare.Application.UseCases.PacienteCase.UpdatePaciente;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -9,17 +11,23 @@ namespace MedCare.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PacienteController : ControllerBase
+    public class PacienteController : BaseApiController
     {
-        private readonly IMediator _mediator;
-
-        public PacienteController(IMediator mediator)
+        [HttpGet("{pacienteid}")]
+        public async Task<ActionResult<Response>> GetOperador(int pacienteid)
         {
-            _mediator = mediator;
+            var response = await _mediator.Send(new GetPacienteRequest(pacienteid));
+
+            if (response.Errors.Any())
+            {
+                return BadRequest(response.Errors);
+            }
+
+            return Ok(response.Result);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<Response>> Editar(int id, [FromBody] UpdatePacienteRequest request, CancellationToken cancellationToken)
+        [HttpPost]
+        public async Task<ActionResult<Response>> Cadastrar([FromBody] CreatePacienteRequest request, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(request, cancellationToken);
 
@@ -31,10 +39,23 @@ namespace MedCare.API.Controllers
             return Ok(response.Result);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Response>> Cadastrar([FromBody] CreatePacienteRequest request, CancellationToken cancellationToken)
+        [HttpPut]
+        public async Task<ActionResult<Response>> Editar([FromBody] UpdatePacienteRequest request, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(request, cancellationToken);
+
+            if (response.Errors.Any())
+            {
+                return Unauthorized(response.Errors);
+            }
+
+            return Ok(response.Result);
+        }
+
+        [HttpDelete("{pacienteid}")]
+        public async Task<ActionResult<Response>> Deletar(int pacienteid, CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new DeletePacienteRequest(pacienteid), cancellationToken);
 
             if (response.Errors.Any())
             {
