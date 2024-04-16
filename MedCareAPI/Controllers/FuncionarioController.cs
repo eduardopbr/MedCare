@@ -12,7 +12,7 @@ namespace MedCare.API.Controllers
     public class FuncionarioController : BaseApiController
     {
         [HttpGet("{funcionarioid}")]
-        public async Task<ActionResult<Response>> GetOperador(int funcionarioid)
+        public async Task<ActionResult<Response>> Get(int funcionarioid)
         {
             var response = await _mediator.Send(new GetFuncionarioRequest(funcionarioid));
 
@@ -31,7 +31,7 @@ namespace MedCare.API.Controllers
 
             if (response.Errors.Any())
             {
-                return Unauthorized(response.Errors);
+                return BadRequest(response.Errors);
             }
 
             return Ok(response.Result);
@@ -44,7 +44,7 @@ namespace MedCare.API.Controllers
 
             if (response.Errors.Any())
             {
-                return Unauthorized(response.Errors);
+                return BadRequest(response.Errors);
             }
 
             return Ok(response.Result);
@@ -57,7 +57,7 @@ namespace MedCare.API.Controllers
 
             if (response.Errors.Any())
             {
-                return Unauthorized(response.Errors);
+                return BadRequest(response.Errors);
             }
 
             return Ok(response.Result);

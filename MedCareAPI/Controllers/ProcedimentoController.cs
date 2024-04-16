@@ -3,20 +3,24 @@ using MedCare.Application.UseCases.PacienteCase.CreatePaciente;
 using MedCare.Application.UseCases.PacienteCase.DeletePaciente;
 using MedCare.Application.UseCases.PacienteCase.GetPaciente;
 using MedCare.Application.UseCases.PacienteCase.UpdatePaciente;
-using MediatR;
+using MedCare.Application.UseCases.ProcedimentoCase.CreateProcedimento;
+using MedCare.Application.UseCases.ProcedimentoCase.DeleteProcedimento;
+using MedCare.Application.UseCases.ProcedimentoCase.GetProcedimento;
+using MedCare.Application.UseCases.ProcedimentoCase.UpdateProcedimento;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MedCare.API.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
-    public class PacienteController : BaseApiController
+    public class ProcedimentoController : BaseApiController
     {
-        [HttpGet("{pacienteid}")]
-        public async Task<ActionResult<Response>> Get(int pacienteid)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Response>> Get(int id)
         {
-            var response = await _mediator.Send(new GetPacienteRequest(pacienteid));
+            var response = await _mediator.Send(new GetProcedimentoRequest(id));
 
             if (response.Errors.Any())
             {
@@ -27,7 +31,7 @@ namespace MedCare.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Response>> Cadastrar([FromBody] CreatePacienteRequest request, CancellationToken cancellationToken)
+        public async Task<ActionResult<Response>> Cadastrar([FromBody] CreateProcedimentoRequest request, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(request, cancellationToken);
 
@@ -40,7 +44,7 @@ namespace MedCare.API.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<Response>> Editar([FromBody] UpdatePacienteRequest request, CancellationToken cancellationToken)
+        public async Task<ActionResult<Response>> Editar([FromBody] UpdateProcedimentoRequest request, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(request, cancellationToken);
 
@@ -52,10 +56,10 @@ namespace MedCare.API.Controllers
             return Ok(response.Result);
         }
 
-        [HttpDelete("{pacienteid}")]
-        public async Task<ActionResult<Response>> Deletar(int pacienteid, CancellationToken cancellationToken)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Response>> Deletar(int id, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new DeletePacienteRequest(pacienteid), cancellationToken);
+            var response = await _mediator.Send(new DeleteProcedimentoRequest(id), cancellationToken);
 
             if (response.Errors.Any())
             {

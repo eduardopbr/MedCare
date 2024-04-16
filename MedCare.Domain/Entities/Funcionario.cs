@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -11,6 +12,10 @@ namespace MedCare.Domain.Entities
     [Table("funcionario")]
     public class Funcionario : BaseEntity
     {
+        public Funcionario()
+        {
+            Procedimentos = new Collection<Procedimento>();
+        }
         [StringLength(50)]
         public string nome { get; set; } = null!;
         [StringLength(40)]
@@ -37,5 +42,7 @@ namespace MedCare.Domain.Entities
 
         [StringLength(200)]
         public string email { get; set; } = null!;
+
+        public ICollection<Procedimento>? Procedimentos { get; set; }
     }
 }

@@ -11,6 +11,8 @@ namespace MedCare.Domain.Interfaces
     {
         IPacienteRepository PacienteRepository { get; }
         IFuncionarioRepository FuncionarioRepository { get; }
+        IProcedimentoRepository ProcedimentoRepository { get; }
+        IExameRepository ExameRepository { get; }
         Task Commit(CancellationToken cancellationToken);
         Task<IDbTransaction> BeginTransaction();
     }

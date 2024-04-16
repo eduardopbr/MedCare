@@ -31,5 +31,7 @@ namespace MedCare.Persistence.Context
         //Mapeamento das entidades para tabela
         public DbSet<Paciente> pacientes { get; set; }
         public DbSet<Funcionario> funcionarios { get; set; }
+        public DbSet<Exame> exames { get; set; }
+        public DbSet<Procedimento> procedimentos { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MedCare.Domain.Entities
@@ -6,6 +7,11 @@ namespace MedCare.Domain.Entities
     [Table("paciente")]
     public class Paciente : BaseEntity
     {
+        public Paciente()
+        {
+            Procedimentos = new Collection<Procedimento>();
+            Exames = new Collection<Exame>();
+        }
         [StringLength(50)]
         public string nome { get; set; } = null!;
         [StringLength(40)]
@@ -23,5 +29,8 @@ namespace MedCare.Domain.Entities
 
         [StringLength(200)]
         public string email { get; set; } = null!;
+
+        public ICollection<Procedimento>? Procedimentos { get; set; }
+        public ICollection<Exame>? Exames { get; set; }
     }
 }
