@@ -33,5 +33,6 @@ namespace MedCare.Persistence.Context
         public DbSet<Funcionario> funcionarios { get; set; }
         public DbSet<Exame> exames { get; set; }
         public DbSet<Procedimento> procedimentos { get; set; }
+        public DbSet<Consulta> consultas { get; set; }
     }
 }

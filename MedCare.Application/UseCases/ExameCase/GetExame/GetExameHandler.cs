@@ -1,15 +1,8 @@
 ﻿using AutoMapper;
 using MedCare.Application.Shared.Behavior;
-using MedCare.Application.UseCases.ProcedimentoCase;
-using MedCare.Application.UseCases.ProcedimentoCase.GetProcedimento;
 using MedCare.Domain.Entities;
 using MedCare.Domain.Interfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MedCare.Application.UseCases.ExameCase.GetExame
 {

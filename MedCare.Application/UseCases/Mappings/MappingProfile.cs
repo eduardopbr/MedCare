@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using MedCare.Application.UseCases.ConsultaCase;
+using MedCare.Application.UseCases.ConsultaCase.CreateConsulta;
+using MedCare.Application.UseCases.ConsultaCase.UpdateConsulta;
 using MedCare.Application.UseCases.ExameCase;
 using MedCare.Application.UseCases.ExameCase.CreateExame;
 using MedCare.Application.UseCases.ExameCase.UpdateExame;
@@ -37,6 +40,10 @@ namespace MedCare.Application.UseCases.Mappings
             CreateMap<CreateExameRequest, Exame>();
             CreateMap<UpdateExameRequest, Exame>();
             CreateMap<Exame, ExameBaseResponse>();
+
+            CreateMap<CreateConsultaRequest, Consulta>();
+            CreateMap<UpdateConsultaRequest, Consulta>();
+            CreateMap<Consulta, ConsultaBaseResponse>();
         }
     }
 }

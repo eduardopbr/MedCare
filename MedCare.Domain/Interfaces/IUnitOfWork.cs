@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 
 namespace MedCare.Domain.Interfaces
 {
@@ -13,6 +8,7 @@ namespace MedCare.Domain.Interfaces
         IFuncionarioRepository FuncionarioRepository { get; }
         IProcedimentoRepository ProcedimentoRepository { get; }
         IExameRepository ExameRepository { get; }
+        IConsultaRepository ConsultaRepository { get; }
         Task Commit(CancellationToken cancellationToken);
         Task<IDbTransaction> BeginTransaction();
     }

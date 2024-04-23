@@ -12,6 +12,7 @@ namespace MedCare.Persistence.Repositories
         private FuncionarioRepository _funcionarioRepo;
         private ProcedimentoRepository _procedimentoRepo;
         private ExameRepository _exameRepo;
+        private ConsultaRepository _consultaRepo;
         public AppDbContext _context;
         public UnitOfWork(AppDbContext context)
         {
@@ -57,6 +58,14 @@ namespace MedCare.Persistence.Repositories
             get
             {
                 return _exameRepo = _exameRepo ?? new ExameRepository(_context);
+            }
+        }
+
+        public IConsultaRepository ConsultaRepository
+        {
+            get
+            {
+                return _consultaRepo = _consultaRepo ?? new ConsultaRepository(_context);
             }
         }
     }
