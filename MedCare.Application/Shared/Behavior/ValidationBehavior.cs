@@ -28,7 +28,7 @@ namespace MedCare.Application.Shared.Behavior
 
         private static Task<TResponse> Errors(IEnumerable<ValidationFailure> failures)
         {
-            var response = new Response();
+            var response = new Response(CodeStateResponse.RequiredFields);
 
             foreach (var failure in failures)
             {

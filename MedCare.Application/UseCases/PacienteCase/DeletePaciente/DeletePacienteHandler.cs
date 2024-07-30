@@ -3,36 +3,35 @@ using MedCare.Application.Shared.Behavior;
 using MedCare.Domain.Interfaces;
 using MediatR;
 
-namespace MedCare.Application.UseCases.PacienteCase.DeletePaciente
+namespace MedCare.Application.UseCases.PacienteCase.DeletePaciente;
+
+public class DeletePacienteHandler : IRequestHandler<DeletePacienteRequest, Response>
 {
-    public class DeletePacienteHandler : IRequestHandler<DeletePacienteRequest, Response>
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
+
+    public DeletePacienteHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+    }
 
-        public DeletePacienteHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public async Task<Response> Handle(DeletePacienteRequest request, CancellationToken cancellationToken)
+    {
+        try
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            var paciente = await _unitOfWork.PacienteRepository.GetById(request.id, cancellationToken);
+
+            if (paciente == null) return new Response(CodeStateResponse.Warning).AddError("Paciente não encontrado");
+
+            _unitOfWork.PacienteRepository.Delete(paciente);
+            await _unitOfWork.Commit(cancellationToken);
+
+            return new Response(CodeStateResponse.Success);
         }
-
-        public async Task<Response> Handle(DeletePacienteRequest request, CancellationToken cancellationToken)
+        catch (Exception ex)
         {
-            try
-            {
-                var paciente = await _unitOfWork.PacienteRepository.GetById(request.id, cancellationToken);
-
-                if (paciente == null) return new Response().AddError("Paciente não encontrado");
-
-                _unitOfWork.PacienteRepository.Delete(paciente);
-                await _unitOfWork.Commit(cancellationToken);
-
-                return new Response();
-            }
-            catch (Exception ex)
-            {
-                return new Response().AddError(ex.Message);
-            }
+            return new Response(CodeStateResponse.Error).AddError(ex.Message);
         }
     }
 }

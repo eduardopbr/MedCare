@@ -2,35 +2,55 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MedCare.Domain.Entities
+namespace MedCare.Domain.Entities;
+
+[Table("paciente")]
+public class Paciente : BaseEntity
 {
-    [Table("paciente")]
-    public class Paciente : BaseEntity
+    public Paciente()
     {
-        public Paciente()
-        {
-            Procedimentos = new Collection<Procedimento>();
-            Exames = new Collection<Exame>();
-        }
-        [StringLength(50)]
-        public string nome { get; set; } = null!;
-        [StringLength(40)]
-        public string cpf { get; set; } = null!;
-        [StringLength(20)]
-        public string sexo { get; set; } = null!;
-        [Column(TypeName = "date")]
-        public DateTime datanascimento { get; set; }
+        Procedimentos = new Collection<Procedimento>();
+        Exames = new Collection<Exame>();
+    }
 
-        [StringLength(200)]
-        public string endereco { get; set; } = null!;
+    public Paciente(string cpf, string sexo, DateTime datanascimento, string endereco, string celular, string email)
+    {
+        this.cpf = cpf;
+        this.sexo = sexo;
+        this.datanascimento = datanascimento;
+        this.endereco = endereco;
+        this.celular = celular;
+        this.email = email;
+    }
 
-        [StringLength(30)]
-        public string celular { get; set; } = null!;
+    [StringLength(50)]
+    public string nome { get; set; } = null!;
+    [StringLength(40)]
+    public string cpf { get; set; } = null!;
+    [StringLength(20)]
+    public string sexo { get; set; } = null!;
+    [Column(TypeName = "date")]
+    public DateTime datanascimento { get; set; }
 
-        [StringLength(200)]
-        public string email { get; set; } = null!;
+    [StringLength(200)]
+    public string endereco { get; set; } = null!;
 
-        public ICollection<Procedimento>? Procedimentos { get; set; }
-        public ICollection<Exame>? Exames { get; set; }
+    [StringLength(30)]
+    public string celular { get; set; } = null!;
+
+    [StringLength(200)]
+    public string email { get; set; } = null!;
+
+    public ICollection<Procedimento>? Procedimentos { get; set; }
+    public ICollection<Exame>? Exames { get; set; }
+
+    public void Atualizar(string cpf, string sexo, DateTime datanascimento, string endereco, string celular, string email)
+    {
+        this.cpf = cpf;
+        this.sexo = sexo;
+        this.datanascimento = datanascimento;
+        this.endereco = endereco;
+        this.celular = celular;
+        this.email = email;
     }
 }

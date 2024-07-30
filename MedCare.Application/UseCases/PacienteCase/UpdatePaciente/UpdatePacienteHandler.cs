@@ -4,28 +4,36 @@ using MedCare.Domain.Entities;
 using MedCare.Domain.Interfaces;
 using MediatR;
 
-namespace MedCare.Application.UseCases.PacienteCase.UpdatePaciente
+namespace MedCare.Application.UseCases.PacienteCase.UpdatePaciente;
+
+public class UpdatePacienteHandler : IRequestHandler<UpdatePacienteRequest, Response>
 {
-    public class UpdatePacienteHandler : IRequestHandler<UpdatePacienteRequest, Response>
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
+
+    public UpdatePacienteHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+    }
 
-        public UpdatePacienteHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public async Task<Response> Handle(UpdatePacienteRequest request, CancellationToken cancellationToken)
+    {
+        try
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
+            var paciente = await _unitOfWork.PacienteRepository.GetById(request.id, cancellationToken);
 
-        public async Task<Response> Handle(UpdatePacienteRequest request, CancellationToken cancellationToken)
-        {
-            var paciente = _mapper.Map<Paciente>(request);
+            if (paciente is null) return new Response(CodeStateResponse.Warning).AddError("Paciente não localizado");
 
             _unitOfWork.PacienteRepository.Update(paciente);
 
             await _unitOfWork.Commit(cancellationToken);
 
             return new Response(_mapper.Map<UpdatePacienteResponse>(paciente));
+        }
+        catch(Exception ex)
+        {
+            return new Response(CodeStateResponse.Error).AddError(ex.Message);
         }
     }
 }

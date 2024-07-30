@@ -1,13 +1,7 @@
 ﻿using AutoMapper;
 using MedCare.Application.Shared.Behavior;
-using MedCare.Application.UseCases.ProcedimentoCase.DeleteProcedimento;
 using MedCare.Domain.Interfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MedCare.Application.UseCases.ExameCase.DeleteExame
 {
@@ -28,16 +22,16 @@ namespace MedCare.Application.UseCases.ExameCase.DeleteExame
             {
                 var exame = await _unitOfWork.ExameRepository.GetById(request.id, cancellationToken);
 
-                if (exame == null) return new Response().AddError("Exame não encontrado");
+                if (exame == null) return new Response(CodeStateResponse.Warning).AddError("Exame não encontrado");
 
                 _unitOfWork.ExameRepository.Delete(exame);
                 await _unitOfWork.Commit(cancellationToken);
 
-                return new Response();
+                return new Response(CodeStateResponse.Success);
             }
             catch (Exception ex)
             {
-                return new Response().AddError(ex.Message);
+                return new Response(CodeStateResponse.Warning).AddError(ex.Message);
             }
         }
     }

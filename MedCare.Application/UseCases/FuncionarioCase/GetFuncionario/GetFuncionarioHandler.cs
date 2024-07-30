@@ -31,13 +31,13 @@ namespace MedCare.Application.UseCases.FuncionarioCase.GetFuncionario
                 Funcionario? funcionario = await _uof.FuncionarioRepository.GetById(request.funcionarioid, cancellationToken);
 
                 if (funcionario is null)
-                    return new Response().AddError("Funcionário não encontrado");
+                    return new Response(CodeStateResponse.Warning).AddError("Funcionário não encontrado");
 
                 return new Response(_mapper.Map<PacienteBaseResponse>(funcionario));
             }
             catch (Exception ex)
             {
-                return new Response().AddError(ex.Message);
+                return new Response(CodeStateResponse.Error).AddError(ex.Message);
             }
         }
     }

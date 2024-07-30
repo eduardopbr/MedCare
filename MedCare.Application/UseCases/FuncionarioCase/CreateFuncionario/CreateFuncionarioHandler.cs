@@ -4,33 +4,32 @@ using MedCare.Domain.Entities;
 using MedCare.Domain.Interfaces;
 using MediatR;
 
-namespace MedCare.Application.UseCases.FuncionarioCase.CreateFuncionario
+namespace MedCare.Application.UseCases.FuncionarioCase.CreateFuncionario;
+
+public class CreateFuncionarioHandler : IRequestHandler<CreateFuncionarioRequest, Response>
 {
-    public class CreateFuncionarioHandler : IRequestHandler<CreateFuncionarioRequest, Response>
+    private readonly IUnitOfWork _uof;
+    private readonly IMapper _mapper;
+
+    public CreateFuncionarioHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        _uof = unitOfWork;
+        _mapper = mapper;
+    }
+    public async Task<Response> Handle(CreateFuncionarioRequest request, CancellationToken cancellationToken)
+    {
+        var funcionario = _mapper.Map<Funcionario>(request);
 
-        public CreateFuncionarioHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        try
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            _uof.FuncionarioRepository.Add(funcionario);
+
+            await _uof.Commit(cancellationToken);
+            return new Response(_mapper.Map<FuncionarioBaseResponse>(funcionario));
         }
-        public async Task<Response> Handle(CreateFuncionarioRequest request, CancellationToken cancellationToken)
+        catch (Exception ex)
         {
-            var funcionario = _mapper.Map<Funcionario>(request);
-
-            try
-            {
-                _unitOfWork.FuncionarioRepository.Add(funcionario);
-
-                await _unitOfWork.Commit(cancellationToken);
-                return new Response(_mapper.Map<FuncionarioBaseResponse>(funcionario));
-            }
-            catch (Exception ex)
-            {
-                return new Response().AddError(ex.Message);
-            }
+            return new Response(CodeStateResponse.Error).AddError(ex.Message);
         }
     }
 }

@@ -3,40 +3,34 @@ using MedCare.Application.Shared.Behavior;
 using MedCare.Domain.Entities;
 using MedCare.Domain.Interfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MedCare.Application.UseCases.PacienteCase.GetPaciente
+namespace MedCare.Application.UseCases.PacienteCase.GetPaciente;
+
+public class GetPacienteHandler : IRequestHandler<GetPacienteRequest, Response>
 {
-    public class GetPacienteHandler : IRequestHandler<GetPacienteRequest, Response>
+    private readonly IUnitOfWork _uof;
+    private readonly IMapper _mapper;
+
+    public GetPacienteHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        private readonly IUnitOfWork _uof;
-        private readonly IMapper _mapper;
+        _uof = unitOfWork;
+        _mapper = mapper;
+    }
 
-        public GetPacienteHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public async Task<Response> Handle(GetPacienteRequest request, CancellationToken cancellationToken)
+    {
+        try
         {
-            _uof = unitOfWork;
-            _mapper = mapper;
+            Paciente? paciente = await _uof.PacienteRepository.GetById(request.pacienteid, cancellationToken);
+
+            if (paciente is null)
+                return new Response(CodeStateResponse.Warning).AddError("Paciente não encontrado");
+
+            return new Response(_mapper.Map<PacienteBaseResponse>(paciente));
         }
-
-        public async Task<Response> Handle(GetPacienteRequest request, CancellationToken cancellationToken)
+        catch (Exception ex)
         {
-            try
-            {
-                Paciente? paciente = await _uof.PacienteRepository.GetById(request.pacienteid, cancellationToken);
-
-                if (paciente is null)
-                    return new Response().AddError("Paciente não encontrado");
-
-                return new Response(_mapper.Map<PacienteBaseResponse>(paciente));
-            }
-            catch (Exception ex)
-            {
-                return new Response().AddError(ex.Message);
-            }
+            return new Response(CodeStateResponse.Error).AddError(ex.Message);
         }
     }
 }

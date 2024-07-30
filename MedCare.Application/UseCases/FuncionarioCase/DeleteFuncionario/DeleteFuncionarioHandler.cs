@@ -1,45 +1,37 @@
 ﻿using AutoMapper;
 using MedCare.Application.Shared.Behavior;
-using MedCare.Application.UseCases.PacienteCase;
-using MedCare.Application.UseCases.PacienteCase.DeletePaciente;
 using MedCare.Domain.Interfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MedCare.Application.UseCases.FuncionarioCase.DeleteFuncionario
+namespace MedCare.Application.UseCases.FuncionarioCase.DeleteFuncionario;
+
+public class DeleteFuncionarioHandler : IRequestHandler<DeleteFuncionarioRequest, Response>
 {
-    public class DeleteFuncionarioHandler : IRequestHandler<DeleteFuncionarioRequest, Response>
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
+
+    public DeleteFuncionarioHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+    }
 
-        public DeleteFuncionarioHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public async Task<Response> Handle(DeleteFuncionarioRequest request, CancellationToken cancellationToken)
+    {
+        try
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            var funcionario = await _unitOfWork.FuncionarioRepository.GetById(request.id, cancellationToken);
+
+            if (funcionario == null) return new Response(CodeStateResponse.Warning).AddError("Funcionário não encontrado");
+
+            _unitOfWork.FuncionarioRepository.Delete(funcionario);
+            await _unitOfWork.Commit(cancellationToken);
+
+            return new Response(_mapper.Map<FuncionarioBaseResponse>(funcionario));
         }
-
-        public async Task<Response> Handle(DeleteFuncionarioRequest request, CancellationToken cancellationToken)
+        catch (Exception ex)
         {
-            try
-            {
-                var funcionario = await _unitOfWork.FuncionarioRepository.GetById(request.id, cancellationToken);
-
-                if (funcionario == null) return new Response().AddError("Funcionário não encontrado");
-
-                _unitOfWork.FuncionarioRepository.Delete(funcionario);
-                await _unitOfWork.Commit(cancellationToken);
-
-                return new Response(_mapper.Map<FuncionarioBaseResponse>(funcionario));
-            }
-            catch (Exception ex)
-            {
-                return new Response().AddError(ex.Message);
-            }
+            return new Response(CodeStateResponse.Error).AddError(ex.Message);
         }
     }
 }

@@ -4,34 +4,33 @@ using MedCare.Domain.Entities;
 using MedCare.Domain.Interfaces;
 using MediatR;
 
-namespace MedCare.Application.UseCases.ProcedimentoCase.GetProcedimento
+namespace MedCare.Application.UseCases.ProcedimentoCase.GetProcedimento;
+
+public class GetProcedimentoHandler : IRequestHandler<GetProcedimentoRequest, Response>
 {
-    public class GetProcedimentoHandler : IRequestHandler<GetProcedimentoRequest, Response>
+    private readonly IUnitOfWork _uof;
+    private readonly IMapper _mapper;
+
+    public GetProcedimentoHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        private readonly IUnitOfWork _uof;
-        private readonly IMapper _mapper;
+        _uof = unitOfWork;
+        _mapper = mapper;
+    }
 
-        public GetProcedimentoHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public async Task<Response> Handle(GetProcedimentoRequest request, CancellationToken cancellationToken)
+    {
+        try
         {
-            _uof = unitOfWork;
-            _mapper = mapper;
+            Procedimento? procedimento = await _uof.ProcedimentoRepository.GetById(request.id, cancellationToken);
+
+            if (procedimento is null)
+                return new Response(CodeStateResponse.Warning).AddError("Procedimento não encontrado");
+
+            return new Response(_mapper.Map<ProcedimentoBaseResponse>(procedimento));
         }
-
-        public async Task<Response> Handle(GetProcedimentoRequest request, CancellationToken cancellationToken)
+        catch (Exception ex)
         {
-            try
-            {
-                Procedimento? procedimento = await _uof.ProcedimentoRepository.GetById(request.id, cancellationToken);
-
-                if (procedimento is null)
-                    return new Response().AddError("Procedimento não encontrado");
-
-                return new Response(_mapper.Map<ProcedimentoBaseResponse>(procedimento));
-            }
-            catch (Exception ex)
-            {
-                return new Response().AddError(ex.Message);
-            }
+            return new Response(CodeStateResponse.Error).AddError(ex.Message);
         }
     }
 }

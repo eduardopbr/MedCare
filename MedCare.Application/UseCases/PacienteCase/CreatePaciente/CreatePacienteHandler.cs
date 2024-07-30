@@ -34,7 +34,7 @@ namespace MedCare.Application.UseCases.PacienteCase.CreatePaciente
             }
             catch (Exception ex) 
             {
-                return new Response().AddError(ex.Message);
+                return new Response(CodeStateResponse.Error).AddError(ex.Message);
             }
         }
     }

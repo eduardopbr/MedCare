@@ -19,7 +19,11 @@ namespace MedCare.Application.UseCases.ConsultaCase.UpdateConsulta
 
         public async Task<Response> Handle(UpdateConsultaRequest request, CancellationToken cancellationToken)
         {
-            var consulta = _mapper.Map<Consulta>(request);
+            Consulta? consulta = await _unitOfWork.ConsultaRepository.GetById(request.id, cancellationToken);
+
+            if (consulta is null) return new Response(CodeStateResponse.Warning).AddError("Consulta não localizada");
+
+            consulta.Atualizar(request.pacienteid, request.datanascimento, request.funcionarioid, request.registro, request.especialidade, request.diagnostico, request.examesrelacionados);
 
             _unitOfWork.ConsultaRepository.Update(consulta);
 

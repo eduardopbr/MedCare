@@ -31,7 +31,7 @@ namespace MedCare.Application.UseCases.ExameCase.CreateExame
             }
             catch (Exception ex)
             {
-                return new Response().AddError(ex.Message);
+                return new Response(CodeStateResponse.Warning).AddError(ex.Message);
             }
         }
     }

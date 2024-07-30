@@ -3,11 +3,6 @@ using MedCare.Application.UseCases.ConsultaCase.CreateConsulta;
 using MedCare.Application.UseCases.ConsultaCase.DeleteConsulta;
 using MedCare.Application.UseCases.ConsultaCase.GetConsulta;
 using MedCare.Application.UseCases.ConsultaCase.UpdateConsulta;
-using MedCare.Application.UseCases.ExameCase.CreateExame;
-using MedCare.Application.UseCases.ExameCase.DeleteExame;
-using MedCare.Application.UseCases.ExameCase.GetExame;
-using MedCare.Application.UseCases.ExameCase.UpdateExame;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MedCare.API.Controllers

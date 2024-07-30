@@ -30,7 +30,7 @@ namespace MedCare.Application.UseCases.ConsultaCase.CreateConsulta
             }
             catch (Exception ex)
             {
-                return new Response().AddError(ex.Message);
+                return new Response(CodeStateResponse.Error).AddError(ex.Message);
             }
         }
     }

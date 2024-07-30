@@ -1,44 +1,52 @@
 ﻿using AutoMapper;
 using MedCare.Application.Shared.Behavior;
-using MedCare.Application.UseCases.PacienteCase.UpdatePaciente;
-using MedCare.Domain.Entities;
 using MedCare.Domain.Interfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MedCare.Application.UseCases.FuncionarioCase.UpdateFuncionario
+namespace MedCare.Application.UseCases.FuncionarioCase.UpdateFuncionario;
+
+public class UpdateFuncionarioHandler : IRequestHandler<UpdateFuncionarioRequest, Response>
 {
-    public class UpdateFuncionarioHandler : IRequestHandler<UpdateFuncionarioRequest, Response>
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
+
+    public UpdateFuncionarioHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+    }
 
-        public UpdateFuncionarioHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public async Task<Response> Handle(UpdateFuncionarioRequest request, CancellationToken cancellationToken)
+    {
+        try
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            var funcionario = await _unitOfWork.FuncionarioRepository.GetById(request.id, cancellationToken);
+
+            if (funcionario is null)
+                return new Response(CodeStateResponse.Warning).AddError("Funcionário não localizado");
+
+            funcionario.Atualizar(
+                request.nome, 
+                request.cpf, 
+                request.sexo, 
+                request.datanascimento, 
+                request.cargo, 
+                request.registr_profissional, 
+                request.especialidade, 
+                request.endereco, 
+                request.celular, 
+                request.email
+            );
+
+            _unitOfWork.FuncionarioRepository.Update(funcionario);
+
+            await _unitOfWork.Commit(cancellationToken);
+
+            return new Response(_mapper.Map<FuncionarioBaseResponse>(funcionario));
         }
-
-        public async Task<Response> Handle(UpdateFuncionarioRequest request, CancellationToken cancellationToken)
+        catch (Exception ex)
         {
-            try
-            {
-                var funcionario = _mapper.Map<Funcionario>(request);
-
-                _unitOfWork.FuncionarioRepository.Update(funcionario);
-
-                await _unitOfWork.Commit(cancellationToken);
-
-                return new Response(_mapper.Map<FuncionarioBaseResponse>(funcionario));
-            }
-            catch (Exception ex)
-            {
-                return new Response().AddError(ex.Message);
-            }
+            return new Response(CodeStateResponse.Error).AddError(ex.Message);
         }
     }
 }
