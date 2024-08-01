@@ -18,7 +18,7 @@ public class CreateFuncionarioHandler : IRequestHandler<CreateFuncionarioRequest
     }
     public async Task<Response> Handle(CreateFuncionarioRequest request, CancellationToken cancellationToken)
     {
-        var funcionario = _mapper.Map<Funcionario>(request);
+        Funcionario funcionario = new(request.nome, request.cpf, request.sexo, request.datanascimento, request.cargo, request.registr_profissional, request.especialidade, request.endereco, request.celular, request.email);
 
         try
         {

@@ -6,6 +6,20 @@ namespace MedCare.Domain.Entities;
 [Table("consulta")]
 public class Consulta : BaseEntity
 {
+    public Consulta()
+    {
+        
+    }
+    public Consulta(int pacienteid, DateTime datanascimento, int funcionarioid, int registro, string especialidade, string diagnostico, string? examesrelacionados)
+    {
+        this.pacienteid = pacienteid;
+        this.datanasc = datanascimento;
+        this.funcionarioid = funcionarioid;
+        this.registro = registro;
+        this.especialidade = especialidade.Trim().ToUpper();
+        this.diagnostico = diagnostico.Trim().ToUpper();
+        this.examesrelacionados = examesrelacionados?.Trim().ToUpper();
+    }
     public int pacienteid { get; set; }
     [Column(TypeName = "date")]
     public DateTime datanasc {  get; set; }
@@ -25,8 +39,8 @@ public class Consulta : BaseEntity
         this.datanasc = datanascimento;
         this.funcionarioid = funcionarioid;
         this.registro = registro;
-        this.especialidade = especialidade;
-        this.diagnostico = diagnostico;
-        this.examesrelacionados = examesrelacionados;
+        this.especialidade = especialidade.Trim().ToUpper();
+        this.diagnostico = diagnostico.Trim().ToUpper();
+        this.examesrelacionados = examesrelacionados?.Trim().ToUpper();
     }
 }

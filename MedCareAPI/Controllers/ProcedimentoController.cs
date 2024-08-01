@@ -1,10 +1,12 @@
 ﻿using MedCare.Application.Shared.Behavior;
 using MedCare.Application.UseCases.PacienteCase.CreatePaciente;
 using MedCare.Application.UseCases.PacienteCase.DeletePaciente;
+using MedCare.Application.UseCases.PacienteCase.GetAllPacientes;
 using MedCare.Application.UseCases.PacienteCase.GetPaciente;
 using MedCare.Application.UseCases.PacienteCase.UpdatePaciente;
 using MedCare.Application.UseCases.ProcedimentoCase.CreateProcedimento;
 using MedCare.Application.UseCases.ProcedimentoCase.DeleteProcedimento;
+using MedCare.Application.UseCases.ProcedimentoCase.GetAllProcedimentos;
 using MedCare.Application.UseCases.ProcedimentoCase.GetProcedimento;
 using MedCare.Application.UseCases.ProcedimentoCase.UpdateProcedimento;
 using Microsoft.AspNetCore.Http;
@@ -17,6 +19,18 @@ namespace MedCare.API.Controllers
     [ApiController]
     public class ProcedimentoController : BaseApiController
     {
+        [HttpGet("todos")]
+        public async Task<ActionResult<Response>> GetAll()
+        {
+            var response = await _mediator.Send(new GetAllProcedimentosRequest());
+
+            if (response.Errors.Any())
+            {
+                return BadRequest(response.Errors);
+            }
+
+            return Ok(response.Result);
+        }
         [HttpGet("{id}")]
         public async Task<ActionResult<Response>> Get(int id)
         {

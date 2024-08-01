@@ -13,14 +13,15 @@ public class Paciente : BaseEntity
         Exames = new Collection<Exame>();
     }
 
-    public Paciente(string cpf, string sexo, DateTime datanascimento, string endereco, string celular, string email)
+    public Paciente(string nome, string cpf, string sexo, DateTime datanascimento, string endereco, string celular, string email)
     {
-        this.cpf = cpf;
-        this.sexo = sexo;
+        this.nome = nome.Trim().ToUpper();
+        this.cpf = cpf.Trim().ToUpper();
+        this.sexo = sexo.Trim().ToUpper();
         this.datanascimento = datanascimento;
-        this.endereco = endereco;
-        this.celular = celular;
-        this.email = email;
+        this.endereco = endereco.Trim().ToUpper();
+        this.celular = celular.Trim().ToUpper();
+        this.email = email.Trim().ToUpper();
     }
 
     [StringLength(50)]
@@ -44,13 +45,14 @@ public class Paciente : BaseEntity
     public ICollection<Procedimento>? Procedimentos { get; set; }
     public ICollection<Exame>? Exames { get; set; }
 
-    public void Atualizar(string cpf, string sexo, DateTime datanascimento, string endereco, string celular, string email)
+    public void Atualizar(string nome, string cpf, string sexo, DateTime datanascimento, string endereco, string celular, string email)
     {
-        this.cpf = cpf;
-        this.sexo = sexo;
+        this.nome = nome.Trim().ToUpper();
+        this.cpf = cpf.Trim().ToUpper();
+        this.sexo = sexo.Trim().ToUpper();
         this.datanascimento = datanascimento;
-        this.endereco = endereco;
-        this.celular = celular;
-        this.email = email;
+        this.endereco = endereco.Trim().ToUpper();
+        this.celular = celular.Trim().ToUpper();
+        this.email = email.Trim().ToUpper();
     }
 }

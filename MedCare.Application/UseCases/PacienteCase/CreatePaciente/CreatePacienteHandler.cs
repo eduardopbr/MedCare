@@ -9,33 +9,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MedCare.Application.UseCases.PacienteCase.CreatePaciente
+namespace MedCare.Application.UseCases.PacienteCase.CreatePaciente;
+
+public class CreatePacienteHandler : IRequestHandler<CreatePacienteRequest, Response>
 {
-    public class CreatePacienteHandler : IRequestHandler<CreatePacienteRequest, Response>
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
+
+    public CreatePacienteHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+    }
+    public async Task<Response> Handle(CreatePacienteRequest request, CancellationToken cancellationToken)
+    {
+        Paciente paciente = new(request.nome, request.cpf, request.sexo, request.datanascimento, request.endereco, request.celular, request.email);
 
-        public CreatePacienteHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        try 
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            _unitOfWork.PacienteRepository.Add(paciente);
+
+            await _unitOfWork.Commit(cancellationToken);
+            return new Response(_mapper.Map<CreatePacienteResponse>(paciente));
         }
-        public async Task<Response> Handle(CreatePacienteRequest request, CancellationToken cancellationToken)
+        catch (Exception ex) 
         {
-            var paciente = _mapper.Map<Paciente>(request);
-
-            try 
-            {
-                _unitOfWork.PacienteRepository.Add(paciente);
-
-                await _unitOfWork.Commit(cancellationToken);
-                return new Response(_mapper.Map<CreatePacienteResponse>(paciente));
-            }
-            catch (Exception ex) 
-            {
-                return new Response(CodeStateResponse.Error).AddError(ex.Message);
-            }
+            return new Response(CodeStateResponse.Error).AddError(ex.Message);
         }
     }
 }

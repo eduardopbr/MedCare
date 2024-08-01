@@ -13,5 +13,6 @@ namespace MedCare.Domain.Interfaces
         void Delete(T entity);
         void Update(T entity);
         Task<T> GetById(int id, CancellationToken cancellationToken);
+        Task<List<T>> GetAll(CancellationToken cancellationToken);
     }
 }

@@ -1,8 +1,10 @@
 ﻿using MedCare.Application.Shared.Behavior;
 using MedCare.Application.UseCases.FuncionarioCase.CreateFuncionario;
 using MedCare.Application.UseCases.FuncionarioCase.DeleteFuncionario;
+using MedCare.Application.UseCases.FuncionarioCase.GetAllFuncionario;
 using MedCare.Application.UseCases.FuncionarioCase.GetFuncionario;
 using MedCare.Application.UseCases.FuncionarioCase.UpdateFuncionario;
+using MedCare.Application.UseCases.ProcedimentoCase.GetAllProcedimentos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MedCare.API.Controllers
@@ -11,6 +13,19 @@ namespace MedCare.API.Controllers
     [ApiController]
     public class FuncionarioController : BaseApiController
     {
+        [HttpGet("todos")]
+        public async Task<ActionResult<Response>> GetAll()
+        {
+            var response = await _mediator.Send(new GetAllFuncionariosRequest());
+
+            if (response.Errors.Any())
+            {
+                return BadRequest(response.Errors);
+            }
+
+            return Ok(response.Result);
+        }
+
         [HttpGet("{funcionarioid}")]
         public async Task<ActionResult<Response>> Get(int funcionarioid)
         {

@@ -1,6 +1,7 @@
 ﻿using MedCare.Application.Shared.Behavior;
 using MedCare.Application.UseCases.PacienteCase.CreatePaciente;
 using MedCare.Application.UseCases.PacienteCase.DeletePaciente;
+using MedCare.Application.UseCases.PacienteCase.GetAllPacientes;
 using MedCare.Application.UseCases.PacienteCase.GetPaciente;
 using MedCare.Application.UseCases.PacienteCase.UpdatePaciente;
 using MediatR;
@@ -13,6 +14,18 @@ namespace MedCare.API.Controllers
     [ApiController]
     public class PacienteController : BaseApiController
     {
+        [HttpGet("todos")]
+        public async Task<ActionResult<Response>> GetAllPacientes()
+        {
+            var response = await _mediator.Send(new GetAllPacientesRequest());
+
+            if (response.Errors.Any())
+            {
+                return BadRequest(response.Errors);
+            }
+
+            return Ok(response.Result);
+        }
         [HttpGet("{pacienteid}")]
         public async Task<ActionResult<Response>> Get(int pacienteid)
         {

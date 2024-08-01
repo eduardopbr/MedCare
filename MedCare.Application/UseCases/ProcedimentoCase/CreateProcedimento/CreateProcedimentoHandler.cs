@@ -19,7 +19,7 @@ public class CreateProcedimentoHandler : IRequestHandler<CreateProcedimentoReque
 
     public async Task<Response> Handle(CreateProcedimentoRequest request, CancellationToken cancellationToken)
     {
-        var procedimento = _mapper.Map<Procedimento>(request);
+        Procedimento procedimento = new(request.tipo, request.funcionarioid, request.pacienteid, request.data, request.hora);
 
         try
         {

@@ -38,5 +38,10 @@ namespace MedCare.Persistence.Repositories
         {
             return await _context.Set<T>().FirstOrDefaultAsync(x => x.id == id, cancellationToken);
         }
+
+        public async Task<List<T>> GetAll(CancellationToken cancellationToken)
+        {
+            return await _context.Set<T>().ToListAsync(cancellationToken);
+        }
     }
 }

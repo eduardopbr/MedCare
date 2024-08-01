@@ -20,7 +20,7 @@ public class Exame : BaseEntity
     }
 
     [StringLength(50)]
-    public required string tipo { get; set; }
+    public string tipo { get; set; }
 
     public int pacienteid { get; set; }
 

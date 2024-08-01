@@ -19,16 +19,23 @@ public class UpdateProcedimentoHandler : IRequestHandler<UpdateProcedimentoReque
 
     public async Task<Response> Handle(UpdateProcedimentoRequest request, CancellationToken cancellationToken)
     {
-        var procedimento = await _unitOfWork.ProcedimentoRepository.GetById(request.procedimentoid, cancellationToken);
+        try
+        {
+            var procedimento = await _unitOfWork.ProcedimentoRepository.GetById(request.procedimentoid, cancellationToken);
 
-        if (procedimento is null) return new Response(CodeStateResponse.Warning).AddError("Procedimento não localizado");
+            if (procedimento is null) return new Response(CodeStateResponse.Warning).AddError("Procedimento não localizado");
 
-        procedimento.Atualizar(request.tipo, request.funcionarioid, request.pacienteid, request.data, request.hora);
+            procedimento.Atualizar(request.tipo, request.funcionarioid, request.pacienteid, request.data, request.hora);
 
-        _unitOfWork.ProcedimentoRepository.Update(procedimento);
+            _unitOfWork.ProcedimentoRepository.Update(procedimento);
 
-        await _unitOfWork.Commit(cancellationToken);
+            await _unitOfWork.Commit(cancellationToken);
 
-        return new Response(_mapper.Map<ProcedimentoBaseResponse>(procedimento));
+            return new Response(_mapper.Map<ProcedimentoBaseResponse>(procedimento));
+        }
+        catch (Exception ex)
+        {
+            return new Response(CodeStateResponse.Error).AddError(ex.Message);
+        }
     }
 }

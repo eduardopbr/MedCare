@@ -20,8 +20,7 @@ namespace MedCare.Application.UseCases.ExameCase.CreateExame
 
         public async Task<Response> Handle(CreateExameRequest request, CancellationToken cancellationToken)
         {
-            var exame = _mapper.Map<Exame>(request);
-
+            Exame exame = new(request.tipo, request.pacienteid, request.data, request.hora, request.resultado);
             try
             {
                 _unitOfWork.ExameRepository.Add(exame);

@@ -2,10 +2,12 @@
 using MedCare.Application.Shared.Behavior;
 using MedCare.Application.UseCases.ExameCase.CreateExame;
 using MedCare.Application.UseCases.ExameCase.DeleteExame;
+using MedCare.Application.UseCases.ExameCase.GetAllExames;
 using MedCare.Application.UseCases.ExameCase.GetExame;
 using MedCare.Application.UseCases.ExameCase.UpdateExame;
 using MedCare.Application.UseCases.ProcedimentoCase.CreateProcedimento;
 using MedCare.Application.UseCases.ProcedimentoCase.DeleteProcedimento;
+using MedCare.Application.UseCases.ProcedimentoCase.GetAllProcedimentos;
 using MedCare.Application.UseCases.ProcedimentoCase.GetProcedimento;
 using MedCare.Application.UseCases.ProcedimentoCase.UpdateProcedimento;
 using Microsoft.AspNetCore.Http;
@@ -17,6 +19,19 @@ namespace MedCare.API.Controllers
     [ApiController]
     public class ExameController : BaseApiController
     {
+        [HttpGet("todos")]
+        public async Task<ActionResult<Response>> GetAll()
+        {
+            var response = await _mediator.Send(new GetAllExamesRequest());
+
+            if (response.Errors.Any())
+            {
+                return BadRequest(response.Errors);
+            }
+
+            return Ok(response.Result);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Response>> Get(int id)
         {
