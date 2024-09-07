@@ -17,12 +17,6 @@ namespace MedCare.API.Controllers
         public async Task<ActionResult<Response>> GetAll()
         {
             var response = await _mediator.Send(new GetAllFuncionariosRequest());
-
-            if (response.Errors.Any())
-            {
-                return BadRequest(response.Errors);
-            }
-
             return Ok(response.Result);
         }
 
@@ -30,11 +24,6 @@ namespace MedCare.API.Controllers
         public async Task<ActionResult<Response>> Get(int funcionarioid)
         {
             var response = await _mediator.Send(new GetFuncionarioRequest(funcionarioid));
-
-            if (response.Errors.Any())
-            {
-                return BadRequest(response.Errors);
-            }
 
             return Ok(response.Result);
         }
@@ -44,11 +33,6 @@ namespace MedCare.API.Controllers
         {
             var response = await _mediator.Send(request, cancellationToken);
 
-            if (response.Errors.Any())
-            {
-                return BadRequest(response.Errors);
-            }
-
             return Ok(response.Result);
         }
 
@@ -57,11 +41,6 @@ namespace MedCare.API.Controllers
         {
             var response = await _mediator.Send(request, cancellationToken);
 
-            if (response.Errors.Any())
-            {
-                return BadRequest(response.Errors);
-            }
-
             return Ok(response.Result);
         }
 
@@ -69,11 +48,6 @@ namespace MedCare.API.Controllers
         public async Task<ActionResult<Response>> Deletar(int funcionarioid, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(new DeleteFuncionarioRequest(funcionarioid), cancellationToken);
-
-            if (response.Errors.Any())
-            {
-                return BadRequest(response.Errors);
-            }
 
             return Ok(response.Result);
         }

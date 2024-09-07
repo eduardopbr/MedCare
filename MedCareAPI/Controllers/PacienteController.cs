@@ -19,22 +19,12 @@ namespace MedCare.API.Controllers
         {
             var response = await _mediator.Send(new GetAllPacientesRequest());
 
-            if (response.Errors.Any())
-            {
-                return BadRequest(response.Errors);
-            }
-
             return Ok(response.Result);
         }
         [HttpGet("{pacienteid}")]
         public async Task<ActionResult<Response>> Get(int pacienteid)
         {
             var response = await _mediator.Send(new GetPacienteRequest(pacienteid));
-
-            if (response.Errors.Any())
-            {
-                return BadRequest(response.Errors);
-            }
 
             return Ok(response.Result);
         }
@@ -44,11 +34,6 @@ namespace MedCare.API.Controllers
         {
             var response = await _mediator.Send(request, cancellationToken);
 
-            if (response.Errors.Any())
-            {
-                return BadRequest(response.Errors);
-            }
-
             return Ok(response.Result);
         }
 
@@ -57,11 +42,6 @@ namespace MedCare.API.Controllers
         {
             var response = await _mediator.Send(request, cancellationToken);
 
-            if (response.Errors.Any())
-            {
-                return BadRequest(response.Errors);
-            }
-
             return Ok(response.Result);
         }
 
@@ -69,11 +49,6 @@ namespace MedCare.API.Controllers
         public async Task<ActionResult<Response>> Deletar(int pacienteid, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(new DeletePacienteRequest(pacienteid), cancellationToken);
-
-            if (response.Errors.Any())
-            {
-                return BadRequest(response.Errors);
-            }
 
             return Ok(response.Result);
         }

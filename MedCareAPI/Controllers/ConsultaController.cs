@@ -17,12 +17,6 @@ public class ConsultaController : BaseApiController
     public async Task<ActionResult<Response>> GetAll()
     {
         var response = await _mediator.Send(new GetAllConsultasRequest());
-
-        if (response.Errors.Any())
-        {
-            return BadRequest(response.Errors);
-        }
-
         return Ok(response.Result);
     }
 
@@ -31,11 +25,6 @@ public class ConsultaController : BaseApiController
     {
         var response = await _mediator.Send(new GetConsultaRequest(id));
 
-        if (response.Errors.Any())
-        {
-            return BadRequest(response.Errors);
-        }
-
         return Ok(response.Result);
     }
 
@@ -43,12 +32,6 @@ public class ConsultaController : BaseApiController
     public async Task<ActionResult<Response>> Cadastrar([FromBody] CreateConsultaRequest request, CancellationToken cancellationToken)
     {
         var response = await _mediator.Send(request, cancellationToken);
-
-        if (response.Errors.Any())
-        {
-            return BadRequest(response.Errors);
-        }
-
         return Ok(response.Result);
     }
 
@@ -56,12 +39,6 @@ public class ConsultaController : BaseApiController
     public async Task<ActionResult<Response>> Editar([FromBody] UpdateConsultaRequest request, CancellationToken cancellationToken)
     {
         var response = await _mediator.Send(request, cancellationToken);
-
-        if (response.Errors.Any())
-        {
-            return BadRequest(response.Errors);
-        }
-
         return Ok(response.Result);
     }
 
@@ -69,12 +46,6 @@ public class ConsultaController : BaseApiController
     public async Task<ActionResult<Response>> Deletar(int id, CancellationToken cancellationToken)
     {
         var response = await _mediator.Send(new DeleteConsultaRequest(id), cancellationToken);
-
-        if (response.Errors.Any())
-        {
-            return BadRequest(response.Errors);
-        }
-
         return Ok(response.Result);
     }
 }
