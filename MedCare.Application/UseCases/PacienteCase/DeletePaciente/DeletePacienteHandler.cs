@@ -27,7 +27,7 @@ public class DeletePacienteHandler : IRequestHandler<DeletePacienteRequest, Resp
             _unitOfWork.PacienteRepository.Delete(paciente);
             await _unitOfWork.Commit(cancellationToken);
 
-            return new Response(CodeStateResponse.Success);
+            return new Response(CodeStateResponse.Success).AddSucessoMensagem("Registro excluído com sucesso");
         }
         catch (Exception ex)
         {

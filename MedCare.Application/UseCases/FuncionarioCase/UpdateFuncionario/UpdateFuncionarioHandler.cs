@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MedCare.Application.Shared.Behavior;
+using MedCare.Domain.Entities;
 using MedCare.Domain.Interfaces;
 using MediatR;
 
@@ -7,12 +8,12 @@ namespace MedCare.Application.UseCases.FuncionarioCase.UpdateFuncionario;
 
 public class UpdateFuncionarioHandler : IRequestHandler<UpdateFuncionarioRequest, Response>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _uof;
     private readonly IMapper _mapper;
 
     public UpdateFuncionarioHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
+        _uof = unitOfWork;
         _mapper = mapper;
     }
 
@@ -20,10 +21,16 @@ public class UpdateFuncionarioHandler : IRequestHandler<UpdateFuncionarioRequest
     {
         try
         {
-            var funcionario = await _unitOfWork.FuncionarioRepository.GetById(request.id, cancellationToken);
+            var funcionario = await _uof.FuncionarioRepository.GetById(request.id, cancellationToken);
 
             if (funcionario is null)
                 return new Response(CodeStateResponse.Warning).AddError("Funcionário não localizado");
+
+            Funcionario? funcionarioCpfJaCadastrado =
+                await _uof.FuncionarioRepository.GetEntityFilter(p => p.cpf == request.cpf && p.id != request.id);
+
+            if (funcionarioCpfJaCadastrado is null)
+                return new Response(CodeStateResponse.Warning).AddAvisoMensagem("CPF já cadastrado");
 
             funcionario.Atualizar(
                 request.nome, 
@@ -38,9 +45,9 @@ public class UpdateFuncionarioHandler : IRequestHandler<UpdateFuncionarioRequest
                 request.email
             );
 
-            _unitOfWork.FuncionarioRepository.Update(funcionario);
+            _uof.FuncionarioRepository.Update(funcionario);
 
-            await _unitOfWork.Commit(cancellationToken);
+            await _uof.Commit(cancellationToken);
 
             return new Response(_mapper.Map<FuncionarioBaseResponse>(funcionario));
         }

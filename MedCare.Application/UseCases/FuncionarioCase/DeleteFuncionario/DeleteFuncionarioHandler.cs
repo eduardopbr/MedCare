@@ -27,7 +27,7 @@ public class DeleteFuncionarioHandler : IRequestHandler<DeleteFuncionarioRequest
             _unitOfWork.FuncionarioRepository.Delete(funcionario);
             await _unitOfWork.Commit(cancellationToken);
 
-            return new Response(_mapper.Map<FuncionarioBaseResponse>(funcionario));
+            return new Response(_mapper.Map<FuncionarioBaseResponse>(funcionario)).AddSucessoMensagem("Registro excluído com sucesso");
         }
         catch (Exception ex)
         {

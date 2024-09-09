@@ -18,14 +18,19 @@ public class CreateFuncionarioHandler : IRequestHandler<CreateFuncionarioRequest
     }
     public async Task<Response> Handle(CreateFuncionarioRequest request, CancellationToken cancellationToken)
     {
-        Funcionario funcionario = new(request.nome, request.cpf, request.sexo, request.datanascimento, request.cargo, request.registr_profissional, request.especialidade, request.endereco, request.celular, request.email);
-
         try
         {
+            Funcionario? funcionarioCpfJaCadastrado = await _uof.FuncionarioRepository.GetEntityFilter(p => p.cpf == request.cpf);
+
+            if (funcionarioCpfJaCadastrado is null)
+                return new Response(CodeStateResponse.Warning).AddAvisoMensagem("CPF já cadastrado");
+
+            Funcionario funcionario = new(request.nome, request.cpf, request.sexo, request.datanascimento, request.cargo, request.registr_profissional, request.especialidade, request.endereco, request.celular, request.email);
+
             _uof.FuncionarioRepository.Add(funcionario);
 
             await _uof.Commit(cancellationToken);
-            return new Response(_mapper.Map<FuncionarioBaseResponse>(funcionario));
+            return new Response(_mapper.Map<FuncionarioBaseResponse>(funcionario)).AddSucessoMensagem("Funcionário cadastrado com sucesso");
         }
         catch (Exception ex)
         {

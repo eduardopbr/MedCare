@@ -11,9 +11,9 @@ public class UpdateExameHandler : IRequestHandler<UpdateExameRequest, Response>
     private readonly IUnitOfWork _uof;
     private readonly IMapper _mapper;
 
-    public UpdateExameHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public UpdateExameHandler(IUnitOfWork uof, IMapper mapper)
     {
-        _uof = unitOfWork;
+        _uof = uof;
         _mapper = mapper;
     }
 
@@ -30,6 +30,6 @@ public class UpdateExameHandler : IRequestHandler<UpdateExameRequest, Response>
 
         await _uof.Commit(cancellationToken);
 
-        return new Response(_mapper.Map<ExameBaseResponse>(exame));
+        return new Response(_mapper.Map<ExameBaseResponse>(exame)).AddSucessoMensagem("Exame atualizado com sucesso");
     }
 }

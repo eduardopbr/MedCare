@@ -8,26 +8,26 @@ namespace MedCare.Application.UseCases.ConsultaCase.CreateConsulta;
 
 public class CreateConsultaHandler : IRequestHandler<CreateConsultaRequest, Response>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _uof;
     private readonly IMapper _mapper;
 
-    public CreateConsultaHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public CreateConsultaHandler(IUnitOfWork uof, IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
+        _uof = uof;
         _mapper = mapper;
     }
 
     public async Task<Response> Handle(CreateConsultaRequest request, CancellationToken cancellationToken)
     {
-        Consulta consulta = new(request.pacienteid, request.datanascimento, request.funcionarioid,
-            request.registro, request.especialidade, request.diagnostico, request.examesrelacionados);
-
         try
         {
-            _unitOfWork.ConsultaRepository.Add(consulta);
+            Consulta consulta = new(request.pacienteid, request.datanascimento, request.funcionarioid,
+            request.registro, request.especialidade, request.diagnostico, request.examesrelacionados);
 
-            await _unitOfWork.Commit(cancellationToken);
-            return new Response(_mapper.Map<ConsultaBaseResponse>(consulta));
+            _uof.ConsultaRepository.Add(consulta);
+
+            await _uof.Commit(cancellationToken);
+            return new Response(_mapper.Map<ConsultaBaseResponse>(consulta)).AddSucessoMensagem("Consulta cadastrada com sucesso");
         }
         catch (Exception ex)
         {

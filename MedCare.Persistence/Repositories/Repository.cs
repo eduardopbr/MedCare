@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,6 +43,11 @@ namespace MedCare.Persistence.Repositories
         public async Task<List<T>> GetAll(CancellationToken cancellationToken)
         {
             return await _context.Set<T>().ToListAsync(cancellationToken);
+        }
+
+        public async Task<T> GetEntityFilter(Expression<Func<T, bool>> predicate)
+        {
+            return await _context.Set<T>().AsNoTracking().SingleOrDefaultAsync(predicate);
         }
     }
 }

@@ -20,10 +20,10 @@ public class ConsultaController : BaseApiController
         return Ok(response.Result);
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Response>> Get(int id)
+    [HttpGet("{consulta_id}")]
+    public async Task<ActionResult<Response>> Get(int consulta_id)
     {
-        var response = await _mediator.Send(new GetConsultaRequest(id));
+        var response = await _mediator.Send(new GetConsultaRequest(consulta_id));
 
         return Ok(response.Result);
     }
@@ -42,10 +42,10 @@ public class ConsultaController : BaseApiController
         return Ok(response.Result);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<ActionResult<Response>> Deletar(int id, CancellationToken cancellationToken)
+    [HttpDelete("{consulta_id}")]
+    public async Task<ActionResult<Response>> Deletar(int consulta_id, CancellationToken cancellationToken)
     {
-        var response = await _mediator.Send(new DeleteConsultaRequest(id), cancellationToken);
+        var response = await _mediator.Send(new DeleteConsultaRequest(consulta_id), cancellationToken);
         return Ok(response.Result);
     }
 }

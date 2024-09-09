@@ -28,7 +28,7 @@ public class DeleteConsultaHandler : IRequestHandler<DeleteConsultaRequest, Resp
             _unitOfWork.ConsultaRepository.Delete(consulta);
             await _unitOfWork.Commit(cancellationToken);
 
-            return new Response(CodeStateResponse.Success);
+            return new Response(CodeStateResponse.Success).AddSucessoMensagem("Registro excluído com sucesso");
         }
         catch (Exception ex)
         {

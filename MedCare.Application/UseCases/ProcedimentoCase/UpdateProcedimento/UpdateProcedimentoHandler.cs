@@ -31,7 +31,7 @@ public class UpdateProcedimentoHandler : IRequestHandler<UpdateProcedimentoReque
 
             await _unitOfWork.Commit(cancellationToken);
 
-            return new Response(_mapper.Map<ProcedimentoBaseResponse>(procedimento));
+            return new Response(_mapper.Map<ProcedimentoBaseResponse>(procedimento)).AddSucessoMensagem("Procedimento atualizado com sucesso");
         }
         catch (Exception ex)
         {

@@ -27,10 +27,10 @@ namespace MedCare.API.Controllers
             return Ok(response.Result);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Response>> Get(int id)
+        [HttpGet("{exame_id}")]
+        public async Task<ActionResult<Response>> Get(int exame_id)
         {
-            var response = await _mediator.Send(new GetExameRequest(id));
+            var response = await _mediator.Send(new GetExameRequest(exame_id));
 
             return Ok(response.Result);
         }
@@ -51,10 +51,10 @@ namespace MedCare.API.Controllers
             return Ok(response.Result);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Response>> Deletar(int id, CancellationToken cancellationToken)
+        [HttpDelete("{exame_id}")]
+        public async Task<ActionResult<Response>> Deletar(int exame_id, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new DeleteExameRequest(id), cancellationToken);
+            var response = await _mediator.Send(new DeleteExameRequest(exame_id), cancellationToken);
             return Ok(response.Result);
         }
     }

@@ -8,25 +8,24 @@ namespace MedCare.Application.UseCases.ProcedimentoCase.CreateProcedimento;
 
 public class CreateProcedimentoHandler : IRequestHandler<CreateProcedimentoRequest, Response>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _uof;
     private readonly IMapper _mapper;
 
     public CreateProcedimentoHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
+        _uof = unitOfWork;
         _mapper = mapper;
     }
 
     public async Task<Response> Handle(CreateProcedimentoRequest request, CancellationToken cancellationToken)
     {
-        Procedimento procedimento = new(request.tipo, request.funcionarioid, request.pacienteid, request.data, request.hora);
-
         try
         {
-            _unitOfWork.ProcedimentoRepository.Add(procedimento);
+            Procedimento procedimento = new(request.tipo, request.funcionarioid, request.pacienteid, request.data, request.hora);
+            _uof.ProcedimentoRepository.Add(procedimento);
 
-            await _unitOfWork.Commit(cancellationToken);
-            return new Response(_mapper.Map<ProcedimentoBaseResponse>(procedimento));
+            await _uof.Commit(cancellationToken);
+            return new Response(_mapper.Map<ProcedimentoBaseResponse>(procedimento)).AddSucessoMensagem("Procedimento registrado com sucesso");
         }
         catch (Exception ex)
         {

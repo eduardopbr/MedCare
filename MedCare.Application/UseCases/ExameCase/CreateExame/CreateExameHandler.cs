@@ -26,7 +26,7 @@ namespace MedCare.Application.UseCases.ExameCase.CreateExame
                 _unitOfWork.ExameRepository.Add(exame);
 
                 await _unitOfWork.Commit(cancellationToken);
-                return new Response(_mapper.Map<ExameBaseResponse>(exame));
+                return new Response(_mapper.Map<ExameBaseResponse>(exame)).AddSucessoMensagem("Exame cadastrado com sucesso");
             }
             catch (Exception ex)
             {

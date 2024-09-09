@@ -27,7 +27,7 @@ namespace MedCare.Application.UseCases.ExameCase.DeleteExame
                 _unitOfWork.ExameRepository.Delete(exame);
                 await _unitOfWork.Commit(cancellationToken);
 
-                return new Response(CodeStateResponse.Success);
+                return new Response(CodeStateResponse.Success).AddSucessoMensagem("Registro excluído com sucesso");
             }
             catch (Exception ex)
             {

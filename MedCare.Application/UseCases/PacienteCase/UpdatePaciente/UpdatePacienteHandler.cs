@@ -8,12 +8,12 @@ namespace MedCare.Application.UseCases.PacienteCase.UpdatePaciente;
 
 public class UpdatePacienteHandler : IRequestHandler<UpdatePacienteRequest, Response>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _uof;
     private readonly IMapper _mapper;
 
     public UpdatePacienteHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
+        _uof = unitOfWork;
         _mapper = mapper;
     }
 
@@ -21,15 +21,20 @@ public class UpdatePacienteHandler : IRequestHandler<UpdatePacienteRequest, Resp
     {
         try
         {
-            var paciente = await _unitOfWork.PacienteRepository.GetById(request.id, cancellationToken);
+            var paciente = await _uof.PacienteRepository.GetById(request.id, cancellationToken);
 
             if (paciente is null) return new Response(CodeStateResponse.Warning).AddError("Paciente não localizado");
 
+            Paciente? pacienteCpfJaCadastrado = await _uof.PacienteRepository.GetEntityFilter(p => p.cpf == request.cpf && p.id != request.id);
+
+            if (pacienteCpfJaCadastrado is null)
+                return new Response(CodeStateResponse.Warning).AddAvisoMensagem("CPF já cadastrado");
+
             paciente.Atualizar(request.nome, request.cpf, request.sexo, request.datanascimento, request.endereco, request.celular, request.email);
 
-            _unitOfWork.PacienteRepository.Update(paciente);
+            _uof.PacienteRepository.Update(paciente);
 
-            await _unitOfWork.Commit(cancellationToken);
+            await _uof.Commit(cancellationToken);
 
             return new Response(_mapper.Map<UpdatePacienteResponse>(paciente));
         }
