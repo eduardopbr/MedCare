@@ -24,7 +24,9 @@ public class GetAllPacientesHandler : IRequestHandler<GetAllPacientesRequest, Re
         {
             List<Paciente> pacientes = await _uof.PacienteRepository.GetAll(cancellationToken);
 
-            return new Response(_mapper.Map<List<PacienteBaseResponse>>(pacientes));
+            List<AllPacientesResponse> response = AllPacientesResponse.CreateResponse(pacientes).ToList();
+
+            return new Response(response);
         }
         catch (Exception ex)
         {

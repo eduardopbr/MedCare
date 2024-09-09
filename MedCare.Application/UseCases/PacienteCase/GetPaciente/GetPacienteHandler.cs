@@ -26,7 +26,9 @@ public class GetPacienteHandler : IRequestHandler<GetPacienteRequest, Response>
             if (paciente is null)
                 return new Response(CodeStateResponse.Warning).AddError("Paciente não encontrado");
 
-            return new Response(_mapper.Map<PacienteBaseResponse>(paciente));
+            PacienteResponse response = PacienteResponse.CreateResponse(paciente);
+
+            return new Response(response);
         }
         catch (Exception ex)
         {
