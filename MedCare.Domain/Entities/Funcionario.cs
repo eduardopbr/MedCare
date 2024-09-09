@@ -20,7 +20,7 @@ public class Funcionario : BaseEntity
     public Funcionario(string nome, string cpf, string sexo, DateTime datanascimento, string cargo, string? registr_profissional, string? especialidade, string endereco, string celular, string email)
     {
         this.nome = nome;
-        this.cpf = cpf;
+        this.cpf = cpf.Replace(".", "").Replace("-", "").Replace("/", "");
         this.sexo = sexo;
         this.datanascimento = datanascimento;
         this.cargo = cargo;
@@ -63,7 +63,7 @@ public class Funcionario : BaseEntity
     public void Atualizar(string nome, string cpf, string sexo, DateTime datanascimento, string cargo, string? registr_profissional, string? especialidade, string endereco, string celular, string email)
     {
         this.nome = nome;
-        this.cpf = cpf;
+        this.cpf = cpf.Replace(".", "").Replace("-", "").Replace("/", "");
         this.email = email;
         this.sexo = sexo;
         this.datanascimento = datanascimento;

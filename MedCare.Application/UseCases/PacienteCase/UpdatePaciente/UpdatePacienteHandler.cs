@@ -25,7 +25,7 @@ public class UpdatePacienteHandler : IRequestHandler<UpdatePacienteRequest, Resp
 
             if (paciente is null) return new Response(CodeStateResponse.Warning).AddError("Paciente não localizado");
 
-            Paciente? pacienteCpfJaCadastrado = await _uof.PacienteRepository.GetEntityFilter(p => p.cpf == request.cpf && p.id != request.id);
+            Paciente? pacienteCpfJaCadastrado = await _uof.PacienteRepository.GetEntityFilter(p => p.cpf == request.cpf.Replace(".", "").Replace("-", "").Replace("/", "") && p.id != request.id);
 
             if (pacienteCpfJaCadastrado is null)
                 return new Response(CodeStateResponse.Warning).AddAvisoMensagem("CPF já cadastrado");

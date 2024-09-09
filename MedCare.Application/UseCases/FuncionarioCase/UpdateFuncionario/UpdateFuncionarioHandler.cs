@@ -27,7 +27,7 @@ public class UpdateFuncionarioHandler : IRequestHandler<UpdateFuncionarioRequest
                 return new Response(CodeStateResponse.Warning).AddError("Funcionário não localizado");
 
             Funcionario? funcionarioCpfJaCadastrado =
-                await _uof.FuncionarioRepository.GetEntityFilter(p => p.cpf == request.cpf && p.id != request.id);
+                await _uof.FuncionarioRepository.GetEntityFilter(p => p.cpf == request.cpf.Replace(".", "").Replace("-", "").Replace("/", "") && p.id != request.id);
 
             if (funcionarioCpfJaCadastrado is null)
                 return new Response(CodeStateResponse.Warning).AddAvisoMensagem("CPF já cadastrado");

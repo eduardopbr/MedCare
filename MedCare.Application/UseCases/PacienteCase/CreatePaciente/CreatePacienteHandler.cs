@@ -20,7 +20,7 @@ public class CreatePacienteHandler : IRequestHandler<CreatePacienteRequest, Resp
     {
         try 
         {
-            Paciente? pacienteCpfJaCadastrado = await _uof.PacienteRepository.GetEntityFilter(p => p.cpf == request.cpf);
+            Paciente? pacienteCpfJaCadastrado = await _uof.PacienteRepository.GetEntityFilter(p => p.cpf == request.cpf.Replace(".", "").Replace("-", "").Replace("/", ""));
 
             if (pacienteCpfJaCadastrado is null)
                 return new Response(CodeStateResponse.Warning).AddAvisoMensagem("CPF já cadastrado");

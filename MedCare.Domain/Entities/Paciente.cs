@@ -16,7 +16,7 @@ public class Paciente : BaseEntity
     public Paciente(string nome, string cpf, string sexo, DateTime datanascimento, string endereco, string celular, string email)
     {
         this.nome = nome.Trim().ToUpper();
-        this.cpf = cpf.Trim().ToUpper();
+        this.cpf = cpf.Replace(".", "").Replace("-", "").Replace("/", "").Trim().ToUpper();
         this.sexo = sexo.Trim().ToUpper();
         this.datanascimento = datanascimento;
         this.endereco = endereco.Trim().ToUpper();
@@ -48,7 +48,7 @@ public class Paciente : BaseEntity
     public void Atualizar(string nome, string cpf, string sexo, DateTime datanascimento, string endereco, string celular, string email)
     {
         this.nome = nome.Trim().ToUpper();
-        this.cpf = cpf.Trim().ToUpper();
+        this.cpf = cpf.Replace(".", "").Replace("-", "").Replace("/", "").Trim().ToUpper();
         this.sexo = sexo.Trim().ToUpper();
         this.datanascimento = datanascimento;
         this.endereco = endereco.Trim().ToUpper();
