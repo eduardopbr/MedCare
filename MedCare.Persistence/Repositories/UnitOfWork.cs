@@ -1,7 +1,9 @@
-﻿using MedCare.Domain.Interfaces;
+﻿using MedCare.Application.Shared.Behavior;
+using MedCare.Domain.Interfaces;
 using MedCare.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Npgsql;
 using System.Data;
 
 namespace MedCare.Persistence.Repositories
@@ -26,7 +28,17 @@ namespace MedCare.Persistence.Repositories
 
         public async Task Commit(CancellationToken cancellationToken)
         {
-            await _context.SaveChangesAsync(cancellationToken);
+            try
+            {
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+            catch (DbUpdateException ex)
+            {
+                if (ex.InnerException is PostgresException postgresException)
+                    throw new Exception(new ApiPostgresExceptionReponse(postgresException.SqlState).Message);
+
+                throw;
+            }
         }
 
         public IPacienteRepository PacienteRepository
