@@ -25,7 +25,9 @@ public class GetAllProcedimentosHandler : IRequestHandler<GetAllProcedimentosReq
         {
             List<Procedimento> procedimentos = await _uof.ProcedimentoRepository.GetAll(cancellationToken);
 
-            return new Response(_mapper.Map<List<ProcedimentoBaseResponse>>(procedimentos));
+            List<AllProcedimentosResponse> response = AllProcedimentosResponse.CreateResponse(procedimentos).ToList();
+
+            return new Response(response);
         }
         catch (Exception ex)
         {

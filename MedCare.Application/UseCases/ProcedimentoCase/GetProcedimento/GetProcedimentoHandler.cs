@@ -21,12 +21,14 @@ public class GetProcedimentoHandler : IRequestHandler<GetProcedimentoRequest, Re
     {
         try
         {
-            Procedimento? procedimento = await _uof.ProcedimentoRepository.GetById(request.id, cancellationToken);
+            Procedimento? procedimento = await _uof.ProcedimentoRepository.GetProcedimento(request.id);
 
             if (procedimento is null)
                 return new Response(CodeStateResponse.Warning).AddError("Procedimento não encontrado");
 
-            return new Response(_mapper.Map<ProcedimentoBaseResponse>(procedimento));
+            ProcedimentoResponse response = ProcedimentoResponse.CreateResponse(procedimento);
+
+            return new Response(response);
         }
         catch (Exception ex)
         {
