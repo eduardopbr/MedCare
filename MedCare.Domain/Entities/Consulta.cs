@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace MedCare.Domain.Entities;
 
@@ -32,6 +33,12 @@ public class Consulta : BaseEntity
 
     [StringLength(100)]
     public string? examesrelacionados { get; set; }
+
+    [JsonIgnore]
+    public Paciente? paciente { get; set; }
+
+    [JsonIgnore]
+    public Funcionario? funcionario { get; set; }
 
     public void Atualizar(int pacienteid, DateTime datanascimento, int funcionarioid, int registro, string especialidade, string diagnostico, string? examesrelacionados)
     {

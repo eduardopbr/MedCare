@@ -11,6 +11,7 @@ public class Paciente : BaseEntity
     {
         Procedimentos = new Collection<Procedimento>();
         Exames = new Collection<Exame>();
+        Consultas = new Collection<Consulta>();
     }
 
     public Paciente(string nome, string cpf, string sexo, DateTime datanascimento, string endereco, string celular, string email)
@@ -44,6 +45,7 @@ public class Paciente : BaseEntity
 
     public ICollection<Procedimento>? Procedimentos { get; set; }
     public ICollection<Exame>? Exames { get; set; }
+    public ICollection<Consulta>? Consultas { get; set; }
 
     public void Atualizar(string nome, string cpf, string sexo, DateTime datanascimento, string endereco, string celular, string email)
     {

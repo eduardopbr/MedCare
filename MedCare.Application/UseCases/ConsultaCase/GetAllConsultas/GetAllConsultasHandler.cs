@@ -13,9 +13,9 @@ public class GetAllConsultasHandler : IRequestHandler<GetAllConsultasRequest, Re
     private readonly IUnitOfWork _uof;
     private readonly IMapper _mapper;
 
-    public GetAllConsultasHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public GetAllConsultasHandler(IUnitOfWork uof, IMapper mapper)
     {
-        _uof = unitOfWork;
+        _uof = uof;
         _mapper = mapper;
     }
 
@@ -23,9 +23,11 @@ public class GetAllConsultasHandler : IRequestHandler<GetAllConsultasRequest, Re
     {
         try
         {
-            List<Consulta> consultas = await _uof.ConsultaRepository.GetAll(cancellationToken);
+            List<Consulta> consultas = await _uof.ConsultaRepository.GetAllConsultas();
 
-            return new Response(_mapper.Map<List<ConsultaBaseResponse>>(consultas));
+            List<AllConsultasResponse> response = AllConsultasResponse.CreateResponse(consultas).ToList();
+
+            return new Response(response);
         }
         catch (Exception ex)
         {

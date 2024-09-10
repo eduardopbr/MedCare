@@ -25,7 +25,9 @@ public class GetAllExamesHandler : IRequestHandler<GetAllExamesRequest, Response
         {
             List<Exame> exames = await _uof.ExameRepository.GetAll(cancellationToken);
 
-            return new Response(_mapper.Map<List<ExameBaseResponse>>(exames));
+            List<AllExamesResponse> response = AllExamesResponse.CreateResponse(exames).ToList();
+
+            return new Response(response);
         }
         catch (Exception ex)
         {

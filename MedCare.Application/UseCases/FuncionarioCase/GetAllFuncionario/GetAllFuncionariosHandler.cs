@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using MedCare.Application.Shared.Behavior;
-using MedCare.Application.UseCases.ProcedimentoCase.GetAllProcedimentos;
-using MedCare.Application.UseCases.ProcedimentoCase;
 using MedCare.Domain.Entities;
 using MedCare.Domain.Interfaces;
 using MediatR;
@@ -25,7 +23,9 @@ public class GetAllFuncionariosHandler : IRequestHandler<GetAllFuncionariosReque
         {
             List<Funcionario> funcionarios = await _uof.FuncionarioRepository.GetAll(cancellationToken);
 
-            return new Response(_mapper.Map<List<FuncionarioBaseResponse>>(funcionarios));
+            List<AllFuncionarioResponse> response = AllFuncionarioResponse.CreateResponse(funcionarios).ToList();
+
+            return new Response(response);
         }
         catch (Exception ex)
         {

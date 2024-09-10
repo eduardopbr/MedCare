@@ -21,12 +21,14 @@ public class GetConsultaHandler : IRequestHandler<GetConsultaRequest, Response>
     {
         try
         {
-            Consulta? consulta = await _uof.ConsultaRepository.GetById(request.id, cancellationToken);
+            Consulta? consulta = await _uof.ConsultaRepository.GetConsulta(request.id);
 
             if (consulta is null)
                 return new Response(CodeStateResponse.Warning).AddError("Consulta não encontrada");
 
-            return new Response(_mapper.Map<ConsultaBaseResponse>(consulta));
+            ConsultaResponse response = ConsultaResponse.CreateResponse(consulta);
+
+            return new Response(response);
         }
         catch (Exception ex)
         {

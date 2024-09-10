@@ -21,12 +21,14 @@ public class GetExameHandler : IRequestHandler<GetExameRequest, Response>
     {
         try
         {
-            Exame? exame = await _uof.ExameRepository.GetById(request.id, cancellationToken);
+            Exame? exame = await _uof.ExameRepository.GetExame(request.id);
 
             if (exame is null)
                 return new Response(CodeStateResponse.Warning).AddError("Exame não encontrado");
 
-            return new Response(_mapper.Map<ExameBaseResponse>(exame));
+            ExameResponse response = ExameResponse.CreateResponse(exame);
+
+            return new Response(response);
         }
         catch (Exception ex)
         {
