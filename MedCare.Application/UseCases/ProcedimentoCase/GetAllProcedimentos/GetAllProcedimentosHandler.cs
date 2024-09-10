@@ -23,7 +23,7 @@ public class GetAllProcedimentosHandler : IRequestHandler<GetAllProcedimentosReq
     {
         try
         {
-            List<Procedimento> procedimentos = await _uof.ProcedimentoRepository.GetAll(cancellationToken);
+            List<Procedimento> procedimentos = await _uof.ProcedimentoRepository.GetAllProcedimentos();
 
             List<AllProcedimentosResponse> response = AllProcedimentosResponse.CreateResponse(procedimentos).ToList();
 

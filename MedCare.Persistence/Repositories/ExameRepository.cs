@@ -15,4 +15,9 @@ public class ExameRepository : Repository<Exame>, IExameRepository
     {
         return await _context.Set<Exame>().Include(p => p.paciente).Where(p => p.id.Equals(id)).FirstOrDefaultAsync();
     }
+
+    public async Task<List<Exame>> GetAllExames()
+    {
+        return await _context.Set<Exame>().Include(p => p.paciente).ToListAsync();
+    }
 }

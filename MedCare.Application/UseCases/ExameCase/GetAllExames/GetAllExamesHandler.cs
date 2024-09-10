@@ -23,7 +23,7 @@ public class GetAllExamesHandler : IRequestHandler<GetAllExamesRequest, Response
     {
         try
         {
-            List<Exame> exames = await _uof.ExameRepository.GetAll(cancellationToken);
+            List<Exame> exames = await _uof.ExameRepository.GetAllExames();
 
             List<AllExamesResponse> response = AllExamesResponse.CreateResponse(exames).ToList();
 
