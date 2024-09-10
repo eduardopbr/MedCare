@@ -19,14 +19,14 @@ namespace MedCare.API.Controllers
         {
             var response = await _mediator.Send(new GetAllPacientesRequest());
 
-            return Ok(response.Result);
+            return Ok(response);
         }
         [HttpGet("{paciente_id}")]
         public async Task<ActionResult<Response>> Get(int paciente_id)
         {
             var response = await _mediator.Send(new GetPacienteRequest(paciente_id));
 
-            return Ok(response.Result);
+            return Ok(response);
         }
 
         [HttpPost]
@@ -34,7 +34,7 @@ namespace MedCare.API.Controllers
         {
             var response = await _mediator.Send(request, cancellationToken);
 
-            return Ok(response.Result);
+            return Ok(response);
         }
 
         [HttpPut]
@@ -42,7 +42,7 @@ namespace MedCare.API.Controllers
         {
             var response = await _mediator.Send(request, cancellationToken);
 
-            return Ok(response.Result);
+            return Ok(response);
         }
 
         [HttpDelete("{paciente_id}")]
@@ -50,7 +50,7 @@ namespace MedCare.API.Controllers
         {
             var response = await _mediator.Send(new DeletePacienteRequest(paciente_id), cancellationToken);
 
-            return Ok(response.Result);
+            return Ok(response);
         }
     }
 }
