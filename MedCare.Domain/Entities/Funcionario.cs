@@ -74,4 +74,9 @@ public class Funcionario : BaseEntity
         this.celular = celular;
         this.email = email;
     }
+
+    public bool FuncionarioEhMedico()
+    {
+        return this.cargo == "medico";
+    }
 }
