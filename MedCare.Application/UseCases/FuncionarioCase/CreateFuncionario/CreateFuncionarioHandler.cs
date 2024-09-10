@@ -22,7 +22,7 @@ public class CreateFuncionarioHandler : IRequestHandler<CreateFuncionarioRequest
         {
             Funcionario? funcionarioCpfJaCadastrado = await _uof.FuncionarioRepository.GetEntityFilter(p => p.cpf == request.cpf.Replace(".", "").Replace("-", "").Replace("/", ""));
 
-            if (funcionarioCpfJaCadastrado is null)
+            if (funcionarioCpfJaCadastrado != null)
                 return new Response(CodeStateResponse.Warning).AddAvisoMensagem("CPF já cadastrado");
 
             Funcionario funcionario = new(request.nome, request.cpf, request.sexo, request.datanascimento, request.cargo, request.registr_profissional, request.especialidade, request.endereco, request.celular, request.email);

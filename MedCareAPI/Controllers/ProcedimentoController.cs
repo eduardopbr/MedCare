@@ -24,21 +24,21 @@ namespace MedCare.API.Controllers
         {
             var response = await _mediator.Send(new GetAllProcedimentosRequest());
 
-            return Ok(response.Result);
+            return Ok(response);
         }
         [HttpGet("{procedimento_id}")]
         public async Task<ActionResult<Response>> Get(int procedimento_id)
         {
             var response = await _mediator.Send(new GetProcedimentoRequest(procedimento_id));
 
-            return Ok(response.Result);
+            return Ok(response);
         }
 
         [HttpPost]
         public async Task<ActionResult<Response>> Cadastrar([FromBody] CreateProcedimentoRequest request, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(request, cancellationToken);
-            return Ok(response.Result);
+            return Ok(response);
         }
 
         [HttpPut]
@@ -46,14 +46,14 @@ namespace MedCare.API.Controllers
         {
             var response = await _mediator.Send(request, cancellationToken);
 
-            return Ok(response.Result);
+            return Ok(response);
         }
 
         [HttpDelete("{procedimento_id}")]
         public async Task<ActionResult<Response>> Deletar(int procedimento_id, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(new DeleteProcedimentoRequest(procedimento_id), cancellationToken);
-            return Ok(response.Result);
+            return Ok(response);
         }
     }
 }
