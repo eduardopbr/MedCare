@@ -29,7 +29,7 @@ public class UpdateFuncionarioHandler : IRequestHandler<UpdateFuncionarioRequest
             Funcionario? funcionarioCpfJaCadastrado =
                 await _uof.FuncionarioRepository.GetEntityFilter(p => p.cpf == request.cpf.Replace(".", "").Replace("-", "").Replace("/", "") && p.id != request.id);
 
-            if (funcionarioCpfJaCadastrado is null)
+            if (funcionarioCpfJaCadastrado != null)
                 return new Response(CodeStateResponse.Warning).AddAvisoMensagem("CPF já cadastrado");
 
             funcionario.Atualizar(
