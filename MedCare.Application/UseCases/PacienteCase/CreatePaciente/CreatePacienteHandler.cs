@@ -23,12 +23,12 @@ public class CreatePacienteHandler : IRequestHandler<CreatePacienteRequest, Resp
             Paciente? pacienteCpfJaCadastrado = await _uof.PacienteRepository.GetEntityFilter(p => p.cpf == request.cpf.Replace(".", "").Replace("-", "").Replace("/", ""));
 
             if (pacienteCpfJaCadastrado != null)
-                return new Response(CodeStateResponse.Warning).AddAvisoMensagem("CPF já cadastrado");
+                return new Response(CodeStateResponse.Warning).AddError("CPF já cadastrado");
 
             Paciente? pacienteCelularJaCadastrado = await _uof.PacienteRepository.GetEntityFilter(p => p.celular == request.celular);
 
             if (pacienteCelularJaCadastrado != null)
-                return new Response(CodeStateResponse.Warning).AddAvisoMensagem("Celular já cadastrado");
+                return new Response(CodeStateResponse.Warning).AddError("Celular já cadastrado");
 
             Paciente paciente = new(request.nome, request.cpf, request.sexo, request.datanascimento, request.endereco, request.celular, request.email);
 
