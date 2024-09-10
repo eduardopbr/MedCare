@@ -26,7 +26,7 @@ public class CreateConsultaHandler : IRequestHandler<CreateConsultaRequest, Resp
             if (funcionario is null) return new Response(CodeStateResponse.Warning).AddError("Funcionário não encontrado");
 
             if (!funcionario.FuncionarioEhMedico())
-                return new Response(CodeStateResponse.Warning).AddAvisoMensagem("O funcionário selecionado não é médico");
+                return new Response(CodeStateResponse.Warning).AddError("O funcionário selecionado não é médico");
 
             Consulta consulta = new(request.pacienteid, request.datanascimento, request.funcionarioid,
             request.registro, request.especialidade, request.diagnostico, request.examesrelacionados);
